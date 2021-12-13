@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel=”stylesheet” integrity=”sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+      <title>Add Product</title>
+    
+
+    <style>
+        body {
+            color: #000;
+            overflow-x: hidden;
+            height: 100%;
+            background-image: url("https://i.imgur.com/GMmCQHC.png");
+            background-repeat: no-repeat;
+            background-size: 100% 100%
+        }
+
+        .card {
+            padding: 30px 40px;
+            margin-top: 60px;
+            margin-bottom: 60px;
+            border: none !important;
+            box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.2)
+        }
+
+        .blue-text {
+            color: #00BCD4
+        }
+
+        .form-control-label {
+            margin-bottom: 0
+        }
+
+        input,
+        textarea,
+        button {
+            padding: 8px 15px;
+            border-radius: 5px !important;
+            margin: 5px 0px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            font-size: 18px !important;
+            font-weight: 300
+        }
+
+        input:focus,
+        textarea:focus {
+            -moz-box-shadow: none !important;
+            -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+            border: 1px solid #00BCD4;
+            outline-width: 0;
+            font-weight: 400
+        }
+
+        .btn-block {
+            text-transform: uppercase;
+            font-size: 15px !important;
+            font-weight: 400;
+            height: 43px;
+            cursor: pointer
+        }
+
+        .btn-block:hover {
+            color: #fff !important
+        }
+
+        button:focus {
+            -moz-box-shadow: none !important;
+            -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+            outline-width: 0
+        }
+        .out_button{
+            background-color: pink;
+            color: #ff4c68;
+        }
+        .out_button:hover{
+            background-color: #ff4c68;
+            color: white;
+        }
+        span{
+            color:red;
+        }
+
+    </style>
+    <script>
+        function get_sub_category(){
+          cat_id=document.getElementById('category_id').value;
+          
+          $.ajax({
+                          type: 'post',
+                         url: "{{url_for('getSubCategory')}}",
+                         data: {cat_id:cat_id},
+                    
+                         success: function (response) {
+                            // $('#subcategory_id').append(response);
+                            document.getElementById('subcategory_id').innerHTML=response;
+      
+                           }
+                         });
+        }
+      </script>
+      <script>
+          function validate()
+    {
+        var k=0;
+        var selected_category=document.getElementById('category_id').value;
+        var selected_sub_category=document.getElementById('subcategory_id').value;
+        var product_price=document.getElementById('price').value;
+        var striked_price=document.getElementById('striked_price').value;
+        var FileUploadPath = document.getElementById('product_image').value;
+
+        if((selected_category==""))
+        {   
+            console.log("1");
+            k=1;
+            document.getElementById('selected_category_error').innerHTML="Null value can't be accepted.";
+        }
+        else
+        {
+            k=0;
+            document.getElementById('selected_category_error').innerHTML="";
+        }
+        // sub_category
+        
+        console.log(selected_sub_category)
+        if((selected_sub_category==""))
+        {   
+            console.log("2");
+            k=1;
+            document.getElementById('selected_sub_category_error').innerHTML="Null value can't be accepted.";
+        }
+        else
+        {
+            k=0;
+            document.getElementById('selected_sub_category_error').innerHTML="";
+        }
+        var product_name=document.getElementById('product_name').value;
+        console.log(product_name)
+        if((product_name.length<1))
+        {   
+            console.log("3");
+            k=1;
+            document.getElementById('product_name_error').innerHTML="Null value can't be accepted.";
+        }
+        else
+        {
+            k=0;
+            document.getElementById('product_name_error').innerHTML="";
+        }
+        if(product_price=="")
+        {   
+            console.log("4");
+            k=1;
+            document.getElementById('product_price_error').innerHTML="Null value can't be accepted.";
+        }
+        else if((product_price<=0))
+        {   
+            console.log("5");
+            k=1;
+            document.getElementById('product_price_error').innerHTML="Product price cannot be less than or equal to zero";
+        }
+        else
+        {
+            k=0;
+            document.getElementById('product_price_error').innerHTML="";
+        }
+        if(striked_price=="")
+        {   
+            console.log("6");
+            k=1;
+            document.getElementById('striked_price_error').innerHTML="Null value can't be accepted.";
+        }
+        else if((striked_price<=0))
+        {   
+            console.log("7");
+            k=1;
+            document.getElementById('striked_price_error').innerHTML="striked price cannot be less than or equal to zero";
+        }
+        else if((striked_price<product_price))  
+        {   
+            console.log("8");
+            k=1;
+            document.getElementById('striked_price_error').innerHTML="striked price should be less than product price";
+        }
+        else
+        {
+            k=0;
+            document.getElementById('striked_price_error').innerHTML="";
+        }
+
+        if (FileUploadPath == '') 
+        {
+            console.log("9");
+            k=1;
+            document.getElementById('product_image_error').innerHTML="Upload an Image";
+        }
+        else
+        {
+
+            console.log("10");
+            var Extension = FileUploadPath.substring(FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+            if (!(Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension == "jpeg" || Extension == "jpg"))
+            {
+                k=1;
+                document.getElementById('product_image_error').innerHTML="Upload only gif,png,bmp,jpeg or jpg";
+            }
+            else
+            {
+                k=0;
+                document.getElementById('product_image_error').innerHTML="";
+            }
+        }
+
+        if(k==0)
+        {
+          return true;
+        }
+        return false;
+    }
+      </script>
+  </head>
+  <body>
+    <!-- <h1>Hello, world!</h1> -->
+
+
+    <div class="container-fluid px-1 py-5 mx-auto">
+
+        <div class="row d-flex justify-content-center">
+
+            <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
+
+                <h3>Add Products</h3>
+                <p style="color: #ff4c68;">Welcome to PAAS<br> Add your awesome products here.</p>
+                 {% if message %}
+                    <div class="alert alert-info alert-dismissible fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Info!</strong>Successfully added {{message}}
+                    </div>
+
+                {% endif %}
+                <div class="card">
+
+                    
+
+
+
+
+
+
+
+                <!-- form start -->
+                    <form class="form-card" action="{{url_for('AddProducts')}}" method="post" enctype = "multipart/form-data">
+
+                        <!-- choose cotegory and sub-cotegory -->
+                        <div class="row justify-content-between text-left">
+                            
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label class="form-control-label px-3">Cotegory name<span class="text-danger"> *</span></label> 
+                                
+                                <select name="category_id" id="category_id" onchange="get_sub_category()" class="form-control">
+                                    <option value="" >Choose one of the cotegories</option>
+                                    {% for i in all_categories %}
+                                            <option value="{{i.category_id}}">{{i.category_name}}</option>
+                                    {% endfor %}
+                                    </select>
+                                    <span id="selected_category_error"></span>
+                            </div>
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label class="form-control-label px-3">Sub-Cotegory name<span class="text-danger"> *</span></label> 
+                                <select name="subcategory_id" id="subcategory_id" class="form-control">
+                                    <option value="" >Choose one of the sub-cotegories</option>
+                                
+                                </select>
+                                <span id="selected_sub_category_error"></span>
+                            </div>
+
+                        </div>
+
+                        <!-- product name and image -->
+                        <div class="row justify-content-between text-left">
+                            <div class="form-group col-sm-6 flex-column d-flex"> 
+                                <label class="form-control-label px-3">Product name<span class="text-danger"> *</span></label>
+                                <input type="text" id="product_name" name="product_name" placeholder="enter name" > 
+                                <span id="product_name_error"></span>
+                            </div>
+                            <div class="form-group col-sm-6 flex-column d-flex"> 
+                                <label class="form-control-label px-3">Product Image<span class="text-danger"> *</span></label> 
+                                <input type="file" id="product_image" name="product_image" placeholder="" class="form-control-file" > 
+                                <span id="product_image_error"></span>
+                            </div>
+                        </div>
+
+                        <!-- price and discount buttons -->
+                        <div class="row justify-content-between text-left">
+                            <div class="form-group col-sm-6 flex-column d-flex"> 
+                                <label class="form-control-label px-3">Product price<span class="text-danger"> *</span></label>
+                                <input type="number" id="price" name="price" placeholder="" > 
+                                <span id="product_price_error"></span>
+                            </div>
+                            <div class="form-group col-sm-6 flex-column d-flex"> 
+                                <label class="form-control-label px-3">Striked price<span class="text-danger"> *</span></label> 
+                                <input type="number" id="striked_price" name="striked_price" placeholder="" > 
+                                <span id="striked_price_error"></span>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        
+
+                        <!-- submit button -->
+                        <div class="row justify-content-end" >
+                            <div class="form-group col-sm-6"> <button type="submit" onclick="return validate();" class="btn-block" style="background-color: #ff4c68; color: white;">Submit</button> </div>
+                        </div>
+                    </form>
+
+                </div>
+
+                <!-- back button -->
+                <a href="/subcategories" class="btn  btn-lg out_button" role="button" >Back to subcategories</a>
+                <a href="/adminhome" class="btn  btn-lg out_button" role="button" >Back to home</a>
+               
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    -->
+
+ 
+  </body>
+</html>

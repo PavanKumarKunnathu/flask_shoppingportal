@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Products</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel=”stylesheet” integrity=”sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+</head>
+<body>
+<style>
+  .form-group{
+    width:20%;
+    
+  }
+  
+</style>
+<script>
+  function get_sub_category(){
+    cat_id=document.getElementById('category_id').value;
+    $.ajax({
+                    type: 'post',
+                   url: "{{url_for('getSubCategory')}}",
+                   data: {cat_id:cat_id},
+              
+                   success: function (response) {
+                     document.getElementById('get_sub').innerHTML=response;
+
+                     }
+                   });
+  }
+</script>
+
+<div class="container">
+  <h2>Add Category</h2>
+  
+    <form  action="{{url_for('AddProducts')}}" method="post" enctype = "multipart/form-data">
+    <div class="form-group">
+        <label for="category_id" >Select Category:</label>
+        <select  name="category_id" id="category_id" onchange="get_sub_category()">
+           {% for i in all_categories %}
+                <option value="{{i.category_id}}">{{i.category_name}}</option>
+           {% endfor %}
+        </select>
+    </div>
+  
+    
+    <div class="form-group">    
+        <label for="subcategory_id">Select Sub category:</label>
+        <span id="get_sub"></span>
+        <!-- <select  name="subcategory_id" id="subcategory_id">
+          <span id="get_subb"></span> -->
+            <!-- {% for i in all_subcategories %}
+                <option value="{{i.subcategory_id}}">{{i.subcategory_name}}</option>
+            {% endfor %} -->
+        <!-- </select> -->
+    </div>
+
+
+   
+
+    <div class="form-group">
+        <label for="product_name">product name:</label>
+        <input type="text" class="form-control" id="product_name" placeholder="Enter product_name" name="product_name">
+    </div>
+
+
+    <div class="form-group">
+        <label for="price">price:</label>
+        <input type="number" class="form-control" id="price" placeholder="Enter price" name="price">
+    </div>
+
+    <div class="form-group">
+        <label for="striked_price">striked price:</label>
+        <input type="number" class="form-control" id="striked_price" placeholder="Enter price" name="striked_price">
+    </div>
+
+    <div class="form-group">
+        <label for="product_image">product image:</label>
+        <input type="file" class="form-control" id="product_image"  name="product_image">
+    </div>
+
+    
+
+
+    
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</body>
+</html>

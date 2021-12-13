@@ -1,0 +1,129 @@
+
+  
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        
+	<script type="text/javascript">
+	function increaseValue(id,price,totalsum) {
+	//alert(id);
+        price=parseInt(price)
+       var value = parseInt(document.getElementById('i'+id).innerHTML);
+	   var  totalvalue= parseInt(document.getElementById('total').innerHTML);
+        value++;
+     document.getElementById('i'+id).innerHTML= value;
+	 document.getElementById('s'+id).innerHTML=value*price+".00";
+	 document.getElementById('total').innerHTML=totalvalue+price;
+      }
+	 function decreaseValue(id,price,totalsum) {
+      var value = parseInt(document.getElementById('i'+id).innerHTML);
+	  var  totalvalue= parseInt(document.getElementById('total').innerHTML);
+	  if(value==1){
+	  value=1;
+	   document.getElementById('total').innerHTML=totalvalue;
+	  }
+	  else{value--;
+	   document.getElementById('total').innerHTML=totalvalue-price;
+	   }
+      document.getElementById('i'+id).innerHTML = value;
+	  document.getElementById('s'+id).innerHTML=value*price+".00";
+
+	  
+     }
+	   
+	   
+	</script>
+	<script type="text/javascript">
+      function deleteValue(id){
+        window.location.href="/deletecartitem/"+id;
+	//		
+		}
+						  </script>
+			       
+    <style>
+	  
+
+    </style>
+</head>
+<body> 
+
+	
+<div class="container">
+    
+   <div class="row">
+			<div class="col-md-2"></div>
+			 <div class="col-md-8" id="cart_msg">
+				<!--Cart Message--> 
+			 </div>
+			<div class="col-md-2"></div>
+	</div>
+	<div class="row">
+	   <div class="col-md-12 col-xs-12">
+			<div class="panel panel-danger">
+					<div class="panel-heading">Shopping Bag</div>
+					<div class="panel-body">
+						
+                            {% for i in cart_items %}
+
+                            <div class='col-md-12'>
+                                <div class='panel panel-info'>
+                                    <div class='panel-heading'>
+                                        <div class='row'>
+                                           <div class='col-sm-1 col-md-1 '><b>Action</b></div>
+                                           <div class='col-sm-1 col-md-3 '><b>Product Image</b></div>
+                                            <div class='col-sm-1 col-md-3 '><b>Product Name</b></div>
+                                           <div class='col-sm-1 col-md-3 '><b>Quantity</b></div>
+                                            <div class='col-sm-1 col-md-2 '><b>Product Price</b></div>
+                                            
+                                         </div>
+                                    </div>
+								<div class='panel-body panel-dark'>
+								     <div class='row'>
+									   <div class='col-sm-1 col-md-1 '><button name='delete'  class='btn btn-default' onclick="deleteValue('{{i.product_id}}')"; ><span >X</span></button></div>
+							           <div class='col-sm-1 col-md-3 '><img src="{{ url_for('static', filename = 'images/'+i.product_image) }}" style='width:100px; height:80px;'/></div>
+							            <div class='col-sm-1 col-md-3 '><b>{{i.product_name}}</b></div>
+							           <div class='col-sm-1 col-md-3 '><button name='add' class='btn btn-primary' onclick="increaseValue('{{i.product_id}}','{{i.price}}','{{total_count}}');">+</button>
+									   <b><span id='i{{i.product_id}}'>1</span></b>
+									   <button name='sub' class='btn btn-primary' onclick="decreaseValue('{{i.product_id}}','{{i.price}}','{{total_count}}')">-</button>
+									   </div>
+										
+										<div class='col-sm-1 col-md-2 col-xs-2'><b><span id='s{{i.product_id}}'>{{i.price}}</span></b></div>
+							            
+							         </div>
+								</div>
+							</div>
+						</div>
+
+
+                        {% endfor %}
+
+                        <div class='panel-heading'>
+                            <div class='row'>
+                              <div class='col-sm-8 col-md-10 '></div>
+                              <div class='col-sm-3 col-md-1'><a href='/thanks' class='btn btn-danger btn-lg'>pay₹<span id='total'>{{total_count}}</span>
+							  </a></div>
+                            </div>
+                         </div>";
+									
+						
+
+						
+					
+
+					
+					
+			</div>
+        </div>
+    </div>

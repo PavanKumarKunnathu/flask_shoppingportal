@@ -78,7 +78,7 @@ class Cart(db.Model):
     __tablename__ = 'cart'
     id = db.Column(db.Integer, primary_key = True)
     email=db.Column(db.String(200),db.ForeignKey('users.email'))
-    product_id=db.Column(db.String(100),db.ForeignKey('products.product_id'))
+    product_id=db.Column(db.String(100))
 def __init__(self, email,product_id):
    self.email = email
    self.product_id= product_id
